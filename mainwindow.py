@@ -41,8 +41,6 @@ class AppConfig:
 
 
     def save_widgets(self):
-        print(self.widgets)
-        print(self.widget_dict)
         for parent, configs in self.widgets.items():
             for name, widget in configs.items():
                 match = self.match_widget(widget)
@@ -143,13 +141,13 @@ class MainWindow(QMainWindow):
         self.m_ui.f_control.setFixedSize(250, 250)
 
         self.amp_conf_layout = QHBoxLayout(self.m_ui.f_ampConf)
-        self.ampx1.amp_conf.setup()
+        self.ampx1.amp_conf.setup(self.m_ui.actionDEG)
         self.amp_conf_layout.addWidget(self.ampx1.amp_conf)
-        self.ampx2.amp_conf.setup()
+        self.ampx2.amp_conf.setup(self.m_ui.actionDEG)
         self.amp_conf_layout.addWidget(self.ampx2.amp_conf)
-        self.ampy1.amp_conf.setup()
+        self.ampy1.amp_conf.setup(self.m_ui.actionDEG)
         self.amp_conf_layout.addWidget(self.ampy1.amp_conf)
-        self.ampy2.amp_conf.setup()
+        self.ampy2.amp_conf.setup(self.m_ui.actionDEG)
         self.amp_conf_layout.addWidget(self.ampy2.amp_conf)
 
 
@@ -264,14 +262,26 @@ class MainWindow(QMainWindow):
 
     def send_data(self):
         self.tx_buffer[0] = 0x7a7a
-        self.tx_buffer[1] = int(self.m_control.vs_y.value())
+        self.tx_buffer[1] = (self.ampx1.amp_conf.conf_ui.pb_en.isChecked()*1+
+                             self.ampx2.amp_conf.conf_ui.pb_en.isChecked()*2+
+                             self.ampy1.amp_conf.conf_ui.pb_en.isChecked()*4+
+                             self.ampy2.amp_conf.conf_ui.pb_en.isChecked()*8)
+
+        if self.m_control.rb_1ChMode.isChecked() or self.m_control.rb_2ChMode.isChecked():
+            self.tx_buffer[2] = int(self.m_control.x)
+            self.tx_buffer[3] = -int(self.m_control.x)
+            self.tx_buffer[4] = int(self.m_control.y)
+            self.tx_buffer[5] = -int(self.m_control.y)
+        elif self.m_control.rb_4ChMode.isChecked():
+            self.tx_buffer[2] = int(self.ampx1.amp_conf.pos)
+            self.tx_buffer[3] = int(self.ampx2.amp_conf.pos)
+            self.tx_buffer[4] = int(self.ampy1.amp_conf.pos)
+            self.tx_buffer[5] = int(self.ampy2.amp_conf.pos)
 
 
-
-
-        print(self.tx_buffer)
 
         buffer = QByteArray(to_b16t(self.tx_buffer))
+
         self.m_serial.write(buffer)
 
 

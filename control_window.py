@@ -36,7 +36,7 @@ class ControlWindow(Ui_ControlWindow):
         self.l_x.editingFinished.connect(self.update_x)
 
     def update_label(self, label, value):
-        converted = convert_degrees(int(value),self.degree_flag)
+        converted = convert_degrees(int(float(value)),self.degree_flag)
         label.setText(str(f'{converted: .2f}'))
 
         return converted
@@ -53,13 +53,13 @@ class ControlWindow(Ui_ControlWindow):
 
     @Slot()
     def update_y(self):
-        self.y = self.l_y.text()
+        self.y = float(self.l_y.text())
         self.y_disp = self.update_label(self.l_y, self.y)
         self.vs_y.setValue(int(self.y))
 
     @Slot()
     def update_x(self):
-        self.x = self.l_x.text()
+        self.x = float(self.l_x.text())
         self.x_disp = self.update_label(self.l_x, self.x)
         self.hs_x.setValue(int(self.x))
 
@@ -85,26 +85,28 @@ class ControlWindow(Ui_ControlWindow):
     def mode_4ch(self):
         self.vs_y.setEnabled(False)
         self.hs_x.setEnabled(False)
-
+        self.l_x.setEnabled(False)
+        self.l_y.setEnabled(False)
         self.d_xy.setEnabled(False)
 
     @Slot()
     def mode_2ch(self):
         self.vs_y.setEnabled(True)
         self.hs_x.setEnabled(True)
-
+        self.l_x.setEnabled(True)
+        self.l_y.setEnabled(True)
         self.d_xy.setEnabled(False)
 
     @Slot()
     def mode_1ch(self):
         self.vs_y.setEnabled(False)
         self.hs_x.setEnabled(False)
-
+        self.l_x.setEnabled(True)
+        self.l_y.setEnabled(True)
         self.d_xy.setEnabled(True)
 
 
     def update_mode(self):
-        print(self.rb_4ChMode.isChecked())
         if self.rb_1ChMode.isChecked():
             self.mode_1ch()
         elif self.rb_2ChMode.isChecked():

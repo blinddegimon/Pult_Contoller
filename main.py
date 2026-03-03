@@ -18,15 +18,6 @@ if __name__ == "__main__":
     a = QApplication(sys.argv)
     w = MainWindow()
     w.show()
-    #l = QLabel()
-    #l.show()
-
-    #amp = AMPWidget()
-    #amp.show()
-
-    #tb = QPushButton()
-    #tb.setText("Hello world from QT button!")    #tb.setFixedSize(50,50)
-    #tb.show()
 
 
     sys.exit(a.exec())

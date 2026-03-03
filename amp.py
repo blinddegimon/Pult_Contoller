@@ -16,10 +16,43 @@ class AmpConfWidget(QWidget):
         self.name = amp_name
         self.setObjectName("AmpConfWidget_"+amp_name)
 
-    def setup(self):
+        self.pos = 0
+        self.degree_flag = False
+
+
+    def setup(self, degree_widget = None):
         self.conf_ui.setupUi(self)
         self.conf_ui.frame.setMaximumWidth(200)
         self.conf_ui.l_amp.setText("AMP " + self.name)
+
+        self.conf_ui.hs_pos.valueChanged.connect(self.pos_slider_update)
+        self.conf_ui.l_pos.editingFinished.connect(self.pos_line_update)
+
+        degree_widget.toggled.connect(self.update_degree_flag)
+
+    @Slot()
+    def pos_slider_update(self):
+        self.pos = self.conf_ui.hs_pos.value()
+        self.update_label(self.conf_ui.l_pos, self.pos)
+
+
+    @Slot()
+    def pos_line_update(self):
+        self.pos = int(float(self.conf_ui.l_pos.text()))
+        self.update_label(self.conf_ui.l_pos, self.pos)
+        self.conf_ui.hs_pos.setValue(self.pos)
+
+    @Slot()
+    def update_degree_flag(self, val):
+        self.degree_flag = val
+        self.update_label(self.conf_ui.l_pos, self.pos)
+
+
+    def update_label(self, label, value):
+        converted = convert_degrees(int(float(value)),self.degree_flag)
+        label.setText(str(f'{converted: .2f}'))
+
+        return converted
 
 class CurveWidget(QFrame):
 
