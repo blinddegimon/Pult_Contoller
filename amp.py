@@ -1,15 +1,25 @@
+from os import name
+
 from PySide6.QtCore import QRect, Qt, Slot
 from PySide6.QtWidgets import QGridLayout, QPushButton, QLabel, QWidget, QButtonGroup, QFrame
 
 from pyqtgraph import PlotDataItem, mkPen
 
-import numpy as np
+from ui_ampconfwidget import Ui_AmpConfWidget
 
-def add_shift_buffer(buffer, element):
-    buffer = np.roll(buffer, shift=-1)
-    buffer[len(buffer)-1] = element
+from tools import *
 
-    return buffer
+class AmpConfWidget(QWidget):
+    def __init__(self, parent=None, amp_name ="XY"):
+        super().__init__(parent)
+        self.conf_ui = Ui_AmpConfWidget()
+        self.name = amp_name
+        self.setObjectName("AmpConfWidget_"+amp_name)
+
+    def setup(self):
+        self.conf_ui.setupUi(self)
+        self.conf_ui.frame.setMaximumWidth(200)
+        self.conf_ui.l_amp.setText("AMP " + self.name)
 
 class CurveWidget(QFrame):
 
@@ -27,6 +37,8 @@ class CurveWidget(QFrame):
 
         self.l_amp = QLabel(self)
         self.l_amp.setText("AMP " + amp_str)
+        self.l_amp.setFrameShape(QFrame.Shape.Box)
+        self.l_amp.setMaximumHeight(20)
 
         self.pb_pos = QPushButton(self)
         self.pb_pos.setText("Pos")
@@ -80,7 +92,7 @@ class CurveWidget(QFrame):
 
 
 class AMP:
-    def __init__(self, parent=None, buffer_size = 64, amp_str : str = "X1", color = (224,43,51)):
+    def __init__(self, parent=None, buffer_size = 64, amp_str : str = "X1", color = (224,43,51), parent2 = None):
         self.pos = 0
         self.current = 0
 
@@ -96,7 +108,9 @@ class AMP:
 
         self.curve = CurveWidget(parent=parent, amp_str = amp_str, color = color, buffer_size=self.buffer_size)
 
-    def add_points(self, pos, spos, current):
+        self.amp_conf = AmpConfWidget(parent2, amp_name=amp_str)
+
+    def add_points(self, pos=0, spos=0, current=0):
         self.pos = pos
         self.current = current
         self.spos = spos

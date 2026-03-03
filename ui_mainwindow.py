@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'mainwindowEPiSdP.ui'
+## Form generated from reading UI file 'mainwindowpVdrug.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.10.2
 ##
@@ -16,15 +16,15 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QLayout,
-    QMainWindow, QMenu, QMenuBar, QSizePolicy,
-    QStatusBar, QToolBar, QWidget)
+from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QMainWindow,
+    QMenu, QMenuBar, QSizePolicy, QStatusBar,
+    QToolBar, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(811, 588)
+        MainWindow.resize(811, 552)
         self.actionDisconnect = QAction(MainWindow)
         self.actionDisconnect.setObjectName(u"actionDisconnect")
         icon = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.SystemLogOut))
@@ -53,26 +53,14 @@ class Ui_MainWindow(object):
         icon4 = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.MediaPlaybackStop))
         self.actionStop.setIcon(icon4)
         self.actionStop.setMenuRole(QAction.MenuRole.NoRole)
+        self.actionDEG = QAction(MainWindow)
+        self.actionDEG.setObjectName(u"actionDEG")
+        self.actionDEG.setCheckable(True)
+        self.actionDEG.setMenuRole(QAction.MenuRole.NoRole)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.gridLayout.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
-        self.f_control = QFrame(self.centralwidget)
-        self.f_control.setObjectName(u"f_control")
-        self.f_control.setMinimumSize(QSize(0, 150))
-        self.f_control.setFrameShape(QFrame.Shape.StyledPanel)
-        self.f_control.setFrameShadow(QFrame.Shadow.Raised)
-
-        self.gridLayout.addWidget(self.f_control, 1, 0, 1, 1)
-
-        self.f_AMPConf = QFrame(self.centralwidget)
-        self.f_AMPConf.setObjectName(u"f_AMPConf")
-        self.f_AMPConf.setFrameShape(QFrame.Shape.StyledPanel)
-        self.f_AMPConf.setFrameShadow(QFrame.Shadow.Raised)
-
-        self.gridLayout.addWidget(self.f_AMPConf, 1, 1, 1, 1)
-
         self.f_plot = QFrame(self.centralwidget)
         self.f_plot.setObjectName(u"f_plot")
         self.f_plot.setMinimumSize(QSize(500, 300))
@@ -81,8 +69,20 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.f_plot, 0, 0, 1, 2)
 
-        self.gridLayout.setRowStretch(0, 2)
-        self.gridLayout.setRowStretch(1, 1)
+        self.f_control = QFrame(self.centralwidget)
+        self.f_control.setObjectName(u"f_control")
+        self.f_control.setFrameShape(QFrame.Shape.StyledPanel)
+        self.f_control.setFrameShadow(QFrame.Shadow.Raised)
+
+        self.gridLayout.addWidget(self.f_control, 1, 0, 1, 1)
+
+        self.f_ampConf = QFrame(self.centralwidget)
+        self.f_ampConf.setObjectName(u"f_ampConf")
+        self.f_ampConf.setFrameShape(QFrame.Shape.StyledPanel)
+        self.f_ampConf.setFrameShadow(QFrame.Shadow.Raised)
+
+        self.gridLayout.addWidget(self.f_ampConf, 1, 1, 1, 1)
+
         self.gridLayout.setColumnStretch(0, 1)
         self.gridLayout.setColumnStretch(1, 4)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -111,6 +111,7 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.actionClear)
         self.toolBar.addAction(self.actionPause)
         self.toolBar.addAction(self.actionStop)
+        self.toolBar.addAction(self.actionDEG)
 
         self.retranslateUi(MainWindow)
 
@@ -144,6 +145,10 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(shortcut)
         self.actionStop.setShortcut(QCoreApplication.translate("MainWindow", u"Esc", None))
 #endif // QT_CONFIG(shortcut)
+        self.actionDEG.setText(QCoreApplication.translate("MainWindow", u"DEG", None))
+#if QT_CONFIG(tooltip)
+        self.actionDEG.setToolTip(QCoreApplication.translate("MainWindow", u"Convert everythig to degrees", None))
+#endif // QT_CONFIG(tooltip)
         self.menuCalls.setTitle(QCoreApplication.translate("MainWindow", u"Calls", None))
         self.menuTools.setTitle(QCoreApplication.translate("MainWindow", u"Tools", None))
         self.toolBar.setWindowTitle(QCoreApplication.translate("MainWindow", u"toolBar", None))
