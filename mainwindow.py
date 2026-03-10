@@ -113,7 +113,7 @@ class MainWindow(QMainWindow):
         self.pps = 0
         self.prev_pps = 0
 
-        self.tx_buffer = [0 for _ in range(64)]
+        self.tx_buffer = [0 for _ in range(8)]
 
         self.m_ui = Ui_MainWindow()
         self.m_settings = SettingsDialog(self)
@@ -186,7 +186,7 @@ class MainWindow(QMainWindow):
 
         #Frame Config connections
         self.tx_timer = QTimer()
-        self.tx_timer.setInterval(200)
+        self.tx_timer.setInterval(1)
         self.tx_timer.timeout.connect(self.update_tx_timer)
         self.m_control.pb_tx.clicked.connect(self.start_stop_tx_timer)
 
@@ -208,7 +208,7 @@ class MainWindow(QMainWindow):
         self.pps_timer.timeout.connect(self.update_pps_timer)
 
         self.plot_timer = QTimer()
-        self.plot_timer.start(16)
+        self.plot_timer.start(32)
         self.plot_timer.timeout.connect(self.update_plot_timer)
 
     @Slot()
@@ -250,15 +250,17 @@ class MainWindow(QMainWindow):
         self.pps += 1
         buffer_temp = np.array(array.array('h', bytes(self.m_serial.readAll())))
 
-        buffer_temp[2] = convert_degrees(buffer_temp[2])
+        #print(buffer_temp)
+
+        buffer_temp[0] = convert_degrees(buffer_temp[0], degree_flag=self.m_ui.actionDEG.isChecked())
 
 
 
         if not self.m_ui.actionPause.isChecked():
-            self.ampx1.add_points(buffer_temp[1],float(self.m_control.x_disp), buffer_temp[3])
-            self.ampx2.add_points(buffer_temp[1], -float(self.m_control.x_disp), buffer_temp[3])
-            self.ampy1.add_points(buffer_temp[1], float(self.m_control.y_disp), buffer_temp[3])
-            self.ampy2.add_points(buffer_temp[1], -float(self.m_control.y_disp), buffer_temp[3])
+            self.ampx1.add_points(buffer_temp[0], float(self.m_control.x_disp), buffer_temp[1])
+            self.ampx2.add_points(buffer_temp[2], -float(self.m_control.x_disp), buffer_temp[3])
+            self.ampy1.add_points(buffer_temp[4], float(self.m_control.y_disp), buffer_temp[5])
+            self.ampy2.add_points(buffer_temp[6], -float(self.m_control.y_disp), buffer_temp[7])
 
     def send_data(self):
         self.tx_buffer[0] = 0x7a7a
@@ -279,7 +281,7 @@ class MainWindow(QMainWindow):
             self.tx_buffer[5] = int(self.ampy2.amp_conf.pos)
 
 
-
+        #print(self.tx_buffer)
         buffer = QByteArray(to_b16t(self.tx_buffer))
 
         self.m_serial.write(buffer)
@@ -308,7 +310,7 @@ class MainWindow(QMainWindow):
         self.m_serial.setParity(s.parity)
         self.m_serial.setStopBits(s.stop_bits)
         self.m_serial.setFlowControl(s.flow_control)
-        self.m_serial.setReadBufferSize(12)
+        self.m_serial.setReadBufferSize(16)
         if self.m_serial.open(QIODeviceBase.OpenModeFlag.ReadWrite):
             #self.m_console.setEnabled(True)
             #self.m_console.set_local_echo_enabled(s.local_echo_enabled)
