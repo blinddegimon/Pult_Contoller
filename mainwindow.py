@@ -263,7 +263,7 @@ class MainWindow(QMainWindow):
             self.ampy2.add_points(buffer_temp[6], -float(self.m_control.y_disp), buffer_temp[7])
 
     def send_data(self):
-        self.tx_buffer[0] = 0x7a7a
+        self.tx_buffer[0] = 0x6788
         self.tx_buffer[1] = (self.ampx1.amp_conf.conf_ui.pb_en.isChecked()*1+
                              self.ampx2.amp_conf.conf_ui.pb_en.isChecked()*2+
                              self.ampy1.amp_conf.conf_ui.pb_en.isChecked()*4+
