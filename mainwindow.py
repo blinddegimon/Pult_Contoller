@@ -113,7 +113,7 @@ class MainWindow(QMainWindow):
         self.pps = 0
         self.prev_pps = 0
 
-        self.tx_buffer = [0 for _ in range(8)]
+        self.tx_buffer = [0 for _ in range(9)]
 
         self.m_ui = Ui_MainWindow()
         self.m_settings = SettingsDialog(self)
@@ -186,7 +186,7 @@ class MainWindow(QMainWindow):
 
         #Frame Config connections
         self.tx_timer = QTimer()
-        self.tx_timer.setInterval(1)
+        self.tx_timer.setInterval(1000)
         self.tx_timer.timeout.connect(self.update_tx_timer)
         self.m_control.pb_tx.clicked.connect(self.start_stop_tx_timer)
 
@@ -250,7 +250,7 @@ class MainWindow(QMainWindow):
         self.pps += 1
         buffer_temp = np.array(array.array('h', bytes(self.m_serial.readAll())))
 
-        #print(buffer_temp)
+        # print(buffer_temp)
 
         buffer_temp[0] = convert_degrees(buffer_temp[0], degree_flag=self.m_ui.actionDEG.isChecked())
 
@@ -261,6 +261,23 @@ class MainWindow(QMainWindow):
             self.ampx2.add_points(buffer_temp[2], -float(self.m_control.x_disp), buffer_temp[3])
             self.ampy1.add_points(buffer_temp[4], float(self.m_control.y_disp), buffer_temp[5])
             self.ampy2.add_points(buffer_temp[6], -float(self.m_control.y_disp), buffer_temp[7])
+
+
+        self.ampx1.amp_conf.conf_ui.pb_arrSt.setText("CLOSE" if buffer_temp[1] else "OPEN")
+        self.ampx1.amp_conf.conf_ui.pb_arrSt.setStyleSheet(
+            "background-color: " + ("rgb(251, 65, 65)" if buffer_temp[1] else "rgb(92, 179, 56)"))
+
+        self.ampx2.amp_conf.conf_ui.pb_arrSt.setText("CLOSE" if buffer_temp[3] else "OPEN")
+        self.ampx2.amp_conf.conf_ui.pb_arrSt.setStyleSheet(
+            "background-color: " + ("rgb(251, 65, 65)" if buffer_temp[3] else "rgb(92, 179, 56)"))
+
+        self.ampy1.amp_conf.conf_ui.pb_arrSt.setText("CLOSE" if buffer_temp[5] else "OPEN")
+        self.ampy1.amp_conf.conf_ui.pb_arrSt.setStyleSheet(
+            "background-color: " + ("rgb(251, 65, 65)" if buffer_temp[5] else "rgb(92, 179, 56)"))
+
+        self.ampy2.amp_conf.conf_ui.pb_arrSt.setText("CLOSE" if buffer_temp[7] else "OPEN")
+        self.ampy2.amp_conf.conf_ui.pb_arrSt.setStyleSheet(
+            "background-color: " + ("rgb(251, 65, 65)" if buffer_temp[7] else "rgb(92, 179, 56)"))
 
     def send_data(self):
         self.tx_buffer[0] = 0x6788
@@ -279,6 +296,15 @@ class MainWindow(QMainWindow):
             self.tx_buffer[3] = int(self.ampx2.amp_conf.pos)
             self.tx_buffer[4] = int(self.ampy1.amp_conf.pos)
             self.tx_buffer[5] = int(self.ampy2.amp_conf.pos)
+
+        if self.m_control.pb_arr.isChecked():
+            self.tx_buffer[6] = 1
+            self.m_control.pb_arr.setChecked(False)
+        elif self.m_control.pb_rarr.isChecked():
+            self.tx_buffer[6] = 2
+            self.m_control.pb_rarr.setChecked(False)
+        else:
+            self.tx_buffer[6] = 0
 
 
         #print(self.tx_buffer)

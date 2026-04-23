@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'ampconfwidgetvZlHGU.ui'
+## Form generated from reading UI file 'ampconfwidgetrOMAXC.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.10.2
 ##
@@ -33,12 +33,6 @@ class Ui_AmpConfWidget(object):
         self.frame.setFrameShadow(QFrame.Shadow.Plain)
         self.gridLayout = QGridLayout(self.frame)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.pb_en = QPushButton(self.frame)
-        self.pb_en.setObjectName(u"pb_en")
-        self.pb_en.setCheckable(True)
-
-        self.gridLayout.addWidget(self.pb_en, 4, 0, 1, 2)
-
         self.hs_pos = QSlider(self.frame)
         self.hs_pos.setObjectName(u"hs_pos")
         self.hs_pos.setMinimum(-2730)
@@ -48,15 +42,16 @@ class Ui_AmpConfWidget(object):
 
         self.gridLayout.addWidget(self.hs_pos, 6, 0, 1, 2)
 
+        self.pb_en = QPushButton(self.frame)
+        self.pb_en.setObjectName(u"pb_en")
+        self.pb_en.setCheckable(True)
+
+        self.gridLayout.addWidget(self.pb_en, 4, 0, 1, 2)
+
         self.label = QLabel(self.frame)
         self.label.setObjectName(u"label")
 
         self.gridLayout.addWidget(self.label, 5, 0, 1, 1)
-
-        self.l_pos = QLineEdit(self.frame)
-        self.l_pos.setObjectName(u"l_pos")
-
-        self.gridLayout.addWidget(self.l_pos, 5, 1, 1, 1)
 
         self.l_amp = QLabel(self.frame)
         self.l_amp.setObjectName(u"l_amp")
@@ -73,6 +68,16 @@ class Ui_AmpConfWidget(object):
 
         self.gridLayout.addWidget(self.l_amp, 3, 0, 1, 2)
 
+        self.l_pos = QLineEdit(self.frame)
+        self.l_pos.setObjectName(u"l_pos")
+
+        self.gridLayout.addWidget(self.l_pos, 5, 1, 1, 1)
+
+        self.pb_arrSt = QPushButton(self.frame)
+        self.pb_arrSt.setObjectName(u"pb_arrSt")
+
+        self.gridLayout.addWidget(self.pb_arrSt, 7, 0, 1, 2)
+
 
         self.verticalLayout.addWidget(self.frame)
 
@@ -87,5 +92,6 @@ class Ui_AmpConfWidget(object):
         self.pb_en.setText(QCoreApplication.translate("AmpConfWidget", u"EN", None))
         self.label.setText(QCoreApplication.translate("AmpConfWidget", u"Position:", None))
         self.l_amp.setText(QCoreApplication.translate("AmpConfWidget", u"TextLabel", None))
+        self.pb_arrSt.setText("")
     # retranslateUi
 
